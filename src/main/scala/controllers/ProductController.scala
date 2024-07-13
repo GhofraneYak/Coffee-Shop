@@ -2,49 +2,45 @@ package controllers
 
 import models.*
 import org.json4s.DefaultFormats
-import org.json4s.native.Serialization
-import org.json4s.native.Serialization.write
 
 object ProductController {
   private var products: List[Product] = List()
-
   implicit val formats: DefaultFormats.type = DefaultFormats
-
   /**
    * Get actual products
    *
    * @return
    */
-  def getProducts: String = {
-    write(products)
+  def getProducts: List[Product] = {
+    products
   }
 
   /**
    * Add product to the list of actual products
    *
-   * @param json product attributes
+   * @param product product
    * @return
    */
-  def addProduct(json: String): String = {
-    val product = Serialization.read[Product](json)
-    products = (products :+ product).distinct
-    write(product)
+  def addProduct(product: Product): Product = {
+    products = products :+ product
+    product
   }
 
   /**
    * Update product attributes
    *
-   * @param id   product id
-   * @param json new product attributes
+   * @param id             product id
+   * @param updatedProduct new product
    * @return
    */
-  def updateProduct(id: Long, json: String): String = {
-    val updatedProduct = Serialization.read[Product](json)
+  def updateProduct(id: Long, updatedProduct: Product): Option[Product] = {
     products = products.map { product =>
-      //TODO potential problem if updated product doesn't have all attributes needed
-      if (product.id == id) updatedProduct else product
+      if (product.getId == id) {
+        CartController.updateProductInCarts(updatedProduct)
+        updatedProduct
+      } else product
     }
-    write(updatedProduct)
+    products.find(_.getId == id)
   }
 
   /**
@@ -53,10 +49,10 @@ object ProductController {
    * @param id product id
    * @return
    */
-  def deleteProduct(id: Long): String = {
-    val productOpt = products.find(_.id == id)
-    products = products.filterNot(_.id == id)
-    write(productOpt.getOrElse("{}"))
+  def deleteProduct(id: Long): Option[Product] = {
+    val productOpt = products.find(_.getId == id)
+    products = products.filterNot(_.getId == id)
+    productOpt
   }
 
   /**
@@ -66,13 +62,13 @@ object ProductController {
    * @param quantity quantity to add (to subtract use -)
    * @return
    */
-  def updateStock(id: Long, quantity: Int): String = {
+  def updateStock(id: Long, quantity: Int): Option[Product] = {
     products = products.map { product =>
-      if (product.id == id) {
-        product.stock += quantity
+      if (product.getId == id) {
+        product.addStock(quantity)
         product
       } else product
     }
-    write(products.find(_.id == id).getOrElse("{}"))
+    products.find(_.getId == id)
   }
 }
