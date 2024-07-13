@@ -2,8 +2,6 @@ package controllers
 
 import models.*
 import org.json4s.DefaultFormats
-import org.json4s.native.Serialization
-import org.json4s.native.Serialization.write
 
 object OrderController {
   private var orders: List[Order] = List()
@@ -28,5 +26,17 @@ object OrderController {
   def addOrder(order: Order): Order = {
     orders = orders :+ order
     order
+  }
+
+  /**
+   * Delete order
+   *
+   * @param id order id
+   * @return
+   */
+  def deleteOrder(id: Long): Option[Order] = {
+    val orderOpt = orders.find(_.getId == id)
+    orders = orders.filterNot(_.getId == id)
+    orderOpt
   }
 }
