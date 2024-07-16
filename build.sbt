@@ -17,3 +17,5 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http-jackson" % "10.5.2"
 libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1"
 // https://mvnrepository.com/artifact/com.github.jwt-scala/jwt-core
 libraryDependencies += "com.github.jwt-scala" %% "jwt-core" % "10.0.1"
+libraryDependencies += "com.typesafe.akka" %% "akka-http-testkit" % "10.2.10" % Test
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.16" % Test
