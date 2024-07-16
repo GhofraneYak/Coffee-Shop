@@ -1,6 +1,6 @@
 package controllers
 
-import models.*
+import models.Customer
 
 object CustomerController {
   private var customers: List[Customer] = List()

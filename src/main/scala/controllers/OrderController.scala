@@ -1,13 +1,11 @@
 package controllers
 
-import models.*
+import models.Order
 import org.json4s.DefaultFormats
 
 object OrderController {
-  private var orders: List[Order] = List()
-
   implicit val formats: DefaultFormats.type = DefaultFormats
-
+  private var orders: List[Order] = List()
   /**
    * Get all orders
    *

@@ -1,6 +1,6 @@
 package controllers
 
-import models.*
+import models.{Cart, Item, Order, Product}
 
 object CartController {
   private var carts: List[Cart] = List()
