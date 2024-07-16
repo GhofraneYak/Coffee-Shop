@@ -1,11 +1,11 @@
 package controllers
 
-import models.*
+import models.Product
 import org.json4s.DefaultFormats
 
 object ProductController {
-  private var products: List[Product] = List()
   implicit val formats: DefaultFormats.type = DefaultFormats
+  private var products: List[Product] = List()
   /**
    * Get actual products
    *
@@ -13,6 +13,15 @@ object ProductController {
    */
   def getProducts: List[Product] = {
     products
+  }
+
+  /**
+   * Get product by id
+   *
+   * @return
+   */
+  def getProductById(id: Long): Option[Product] = {
+    products.findLast(_.getId == id)
   }
 
   /**
@@ -33,7 +42,8 @@ object ProductController {
    * @param updatedProduct new product
    * @return
    */
-  def updateProduct(id: Long, updatedProduct: Product): Option[Product] = {
+  def updateProduct(updatedProduct: Product): Option[Product] = {
+    def id = updatedProduct.getId
     products = products.map { product =>
       if (product.getId == id) {
         CartController.updateProductInCarts(updatedProduct)
