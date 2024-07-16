@@ -1,11 +1,10 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import akka.http.scaladsl.server.Directives.*
+import akka.http.scaladsl.server.Directives.concat
 import akka.http.scaladsl.server.Route
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import handlers.*
+import handlers.ProductHandler
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -15,8 +14,6 @@ object Main {
 
   // Initialize Jackson ObjectMapper
   val mapper = new ObjectMapper().registerModule(DefaultScalaModule)
-
-
 
   def main(args: Array[String]): Unit = {
     val routes: Route = concat(
